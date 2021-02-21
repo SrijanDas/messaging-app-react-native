@@ -73,15 +73,20 @@ const ChatScreen = ({ navigation, route }) => {
   const sendMessage = () => {
     Keyboard.dismiss();
 
-    db.collection("chats").doc(route.params.id).collection("messages").add({
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      message: input,
-      displayName: auth.currentUser.displayName,
-      email: auth.currentUser.email,
-      photoURL: auth.currentUser.photoURL,
-    });
+    const unsubscribe = db
+      .collection("chats")
+      .doc(route.params.id)
+      .collection("messages")
+      .add({
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        message: input,
+        displayName: auth.currentUser.displayName,
+        email: auth.currentUser.email,
+        photoURL: auth.currentUser.photoURL,
+      });
 
     setInput("");
+    return unsubscribe;
   };
 
   useLayoutEffect(() => {
@@ -122,11 +127,11 @@ const ChatScreen = ({ navigation, route }) => {
                   <View key={id} style={styles.reciever}>
                     <Avatar
                       position="absolute"
-                      bottom={-23}
+                      bottom={-28}
                       right={-2}
                       containerStyle={{
                         position: "absolute",
-                        bottom: -23,
+                        bottom: -28,
                         right: -2,
                       }}
                       rounded
@@ -139,11 +144,11 @@ const ChatScreen = ({ navigation, route }) => {
                   <View key={id} style={styles.sender}>
                     <Avatar
                       position="absolute"
-                      bottom={-23}
+                      bottom={-28}
                       left={-2}
                       containerStyle={{
                         position: "absolute",
-                        bottom: -23,
+                        bottom: -28,
                         left: -2,
                       }}
                       rounded
@@ -213,7 +218,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     maxWidth: "80%",
     position: "relative",
-    marginTop: 15,
+    marginTop: 20,
   },
   sender: {
     padding: 15,
@@ -223,7 +228,7 @@ const styles = StyleSheet.create({
     margin: 15,
     maxWidth: "80%",
     position: "relative",
-    marginTop: 15,
+    marginTop: 20,
   },
   recieverText: {
     color: "white",

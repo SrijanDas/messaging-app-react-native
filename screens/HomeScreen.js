@@ -31,7 +31,7 @@ const HomeScreen = ({ navigation }) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: "Signal",
+      title: "Chats",
       headerStyle: { backgroundColor: "#fff" },
       headerTitleAlign: "center",
       headerTitleStyle: { color: "black" },
