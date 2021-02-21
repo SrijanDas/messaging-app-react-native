@@ -6,8 +6,7 @@ import { auth, db } from "../firebase";
 import { LogBox } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
-
-LogBox.ignoreLogs(["Setting a timer"]);
+import { StatusBar } from "expo-status-bar";
 
 const HomeScreen = ({ navigation }) => {
   const [chats, setChats] = useState([]);
@@ -34,6 +33,7 @@ const HomeScreen = ({ navigation }) => {
     navigation.setOptions({
       title: "Signal",
       headerStyle: { backgroundColor: "#fff" },
+      headerTitleAlign: "center",
       headerTitleStyle: { color: "black" },
       headerTintColor: "black",
       headerLeft: () => (
@@ -83,6 +83,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView>
+      <StatusBar style="dark" />
       <ScrollView style={styles.container}>
         {chats.map(({ id, data: { chatName } }) => (
           <CustomeListItem
