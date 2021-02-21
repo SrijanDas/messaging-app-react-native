@@ -11,7 +11,7 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Avatar, Input } from "react-native-elements";
+import { Avatar, Input, Button, Icon } from "react-native-elements";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import { Keyboard } from "react-native";
@@ -112,17 +112,21 @@ const ChatScreen = ({ navigation, route }) => {
       >
         <TouchableWithoutFeedback>
           <>
-            <ScrollView>
+            {/* -------------------chats-------------- */}
+            <ScrollView
+              alwaysBounceVertical
+              contentContainerStyle={{ paddingTop: 15, paddingBottom: 15 }}
+            >
               {messages.map(({ id, data }) =>
                 data.email === auth.currentUser.email ? (
                   <View key={id} style={styles.reciever}>
                     <Avatar
                       position="absolute"
-                      bottom={-20}
+                      bottom={-23}
                       right={-2}
                       containerStyle={{
                         position: "absolute",
-                        bottom: -20,
+                        bottom: -23,
                         right: -2,
                       }}
                       rounded
@@ -133,12 +137,28 @@ const ChatScreen = ({ navigation, route }) => {
                   </View>
                 ) : (
                   <View key={id} style={styles.sender}>
-                    <Avatar />
+                    <Avatar
+                      position="absolute"
+                      bottom={-23}
+                      left={-2}
+                      containerStyle={{
+                        position: "absolute",
+                        bottom: -23,
+                        left: -2,
+                      }}
+                      rounded
+                      size={30}
+                      source={{ uri: data.photoURL }}
+                    />
                     <Text style={styles.senderText}>{data.message}</Text>
+                    <Text style={styles.senderName}> {data.displayName} </Text>
                   </View>
                 )
               )}
+              <View style={{ height: 60 }} />
             </ScrollView>
+
+            {/* ---------------- send Message -------------- */}
             <View style={styles.footer}>
               <TextInput
                 type="text"
@@ -148,13 +168,12 @@ const ChatScreen = ({ navigation, route }) => {
                 onChangeText={(text) => setInput(text)}
                 onSubmitEditing={sendMessage}
               />
-              <TouchableOpacity
-                style={{ marginRight: 10 }}
+              <Button
                 onPress={sendMessage}
-                activeOpacity={0.5}
-              >
-                <Ionicons name="send" size={35} color={"#2C6BED"} />
-              </TouchableOpacity>
+                disabled={!input}
+                icon={<Ionicons name="send" size={35} color={"#2C6BED"} />}
+                type="clear"
+              />
             </View>
           </>
         </TouchableWithoutFeedback>
@@ -187,23 +206,37 @@ const styles = StyleSheet.create({
   },
   reciever: {
     padding: 15,
-    backgroundColor: "#ECECEC",
+    backgroundColor: "#2C6BED",
     alignSelf: "flex-end",
     borderRadius: 20,
     marginRight: 15,
     marginBottom: 20,
     maxWidth: "80%",
     position: "relative",
+    marginTop: 15,
   },
   sender: {
     padding: 15,
     backgroundColor: "#ECECEC",
-    alignSelf: "flex-end",
+    alignSelf: "flex-start",
     borderRadius: 20,
     margin: 15,
     maxWidth: "80%",
     position: "relative",
+    marginTop: 15,
   },
-  recieverText: {},
-  senderText: {},
+  recieverText: {
+    color: "white",
+    fontWeight: "500",
+  },
+  senderText: {
+    color: "black",
+    fontWeight: "500",
+  },
+  senderName: {
+    paddingRight: 10,
+    marginTop: 5,
+    fontSize: 10,
+    color: "black",
+  },
 });

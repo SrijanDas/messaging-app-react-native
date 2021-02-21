@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { db } from "../firebase";
+import { StatusBar } from "expo-status-bar";
 
 const AddChatScreen = ({ navigation }) => {
   const [input, setInput] = useState("");
@@ -30,6 +31,7 @@ const AddChatScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar style="light" />
       <Input
         placeholder="Enter chat name"
         autoFocus
@@ -39,7 +41,11 @@ const AddChatScreen = ({ navigation }) => {
         }}
         onSubmitEditing={createChat}
       />
-      <Button onPress={createChat} title="Create a new Chat" />
+      <Button
+        disabled={!input}
+        onPress={createChat}
+        title="Create a new Chat"
+      />
     </View>
   );
 };
