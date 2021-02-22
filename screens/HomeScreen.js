@@ -5,7 +5,7 @@ import CustomeListItem from "../components/CustomeListItem";
 import { auth, db } from "../firebase";
 import { LogBox } from "react-native";
 import { TouchableOpacity } from "react-native";
-import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
+import { AntDesign, SimpleLineIcons, Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 
 const HomeScreen = ({ navigation }) => {
@@ -47,25 +47,23 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       ),
+
       headerRight: () => (
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            width: 80,
+            // flexDirection: "row",
+            // justifyContent: "space-between",
+            // width: 80,
             marginRight: 20,
           }}
         >
           <TouchableOpacity activeOpacity={0.5}>
-            <AntDesign name="camerao" size={24} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.5}>
-            <SimpleLineIcons
+            <Ionicons
               onPress={() => {
                 navigation.navigate("AddChat");
               }}
-              name="pencil"
-              size={24}
+              name="chatbubble-ellipses-outline"
+              size={28}
               color="black"
             />
           </TouchableOpacity>

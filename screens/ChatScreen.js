@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -44,6 +44,7 @@ const ChatScreen = ({ navigation, route }) => {
               color: "white",
               marginLeft: 10,
               fontWeight: "700",
+              fontSize: 20,
             }}
           >
             {route.params.chatName}
@@ -71,8 +72,6 @@ const ChatScreen = ({ navigation, route }) => {
   }, [navigation]);
 
   const sendMessage = () => {
-    Keyboard.dismiss();
-
     const unsubscribe = db
       .collection("chats")
       .doc(route.params.id)
@@ -106,82 +105,84 @@ const ChatScreen = ({ navigation, route }) => {
     return unsubscribe;
   }, [route]);
 
+  const scrollViewRef = useRef();
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar style="light" />
 
       <KeyboardAvoidingView
-        behavior="height"
         style={styles.container}
         keyboardVerticalOffset={90}
       >
-        <TouchableWithoutFeedback>
-          <>
-            {/* -------------------chats-------------- */}
-            <ScrollView
-              alwaysBounceVertical
-              contentContainerStyle={{ paddingTop: 15, paddingBottom: 15 }}
-            >
-              {messages.map(({ id, data }) =>
-                data.email === auth.currentUser.email ? (
-                  <View key={id} style={styles.reciever}>
-                    <Avatar
-                      position="absolute"
-                      bottom={-28}
-                      right={-2}
-                      containerStyle={{
-                        position: "absolute",
-                        bottom: -28,
-                        right: -2,
-                      }}
-                      rounded
-                      size={30}
-                      source={{ uri: data.photoURL }}
-                    />
-                    <Text style={styles.recieverText}>{data.message}</Text>
-                  </View>
-                ) : (
-                  <View key={id} style={styles.sender}>
-                    <Avatar
-                      position="absolute"
-                      bottom={-28}
-                      left={-2}
-                      containerStyle={{
-                        position: "absolute",
-                        bottom: -28,
-                        left: -2,
-                      }}
-                      rounded
-                      size={30}
-                      source={{ uri: data.photoURL }}
-                    />
-                    <Text style={styles.senderText}>{data.message}</Text>
-                    <Text style={styles.senderName}> {data.displayName} </Text>
-                  </View>
-                )
-              )}
-              <View style={{ height: 60 }} />
-            </ScrollView>
+        <>
+          {/* -------------------chats-------------- */}
+          <ScrollView
+            ref={scrollViewRef}
+            onContentSizeChange={() =>
+              scrollViewRef.current.scrollToEnd({ animated: true })
+            }
+            contentContainerStyle={{ paddingTop: 15, paddingBottom: 15 }}
+          >
+            {messages.map(({ id, data }) =>
+              data.email === auth.currentUser.email ? (
+                <View key={id} style={styles.reciever}>
+                  <Avatar
+                    position="absolute"
+                    bottom={-28}
+                    right={-2}
+                    containerStyle={{
+                      position: "absolute",
+                      bottom: -28,
+                      right: -2,
+                    }}
+                    rounded
+                    size={30}
+                    source={{ uri: data.photoURL }}
+                  />
+                  <Text style={styles.recieverText}>{data.message}</Text>
+                </View>
+              ) : (
+                <View key={id} style={styles.sender}>
+                  <Avatar
+                    position="absolute"
+                    bottom={-28}
+                    left={-2}
+                    containerStyle={{
+                      position: "absolute",
+                      bottom: -28,
+                      left: -2,
+                    }}
+                    rounded
+                    size={30}
+                    source={{ uri: data.photoURL }}
+                  />
+                  <Text style={styles.senderText}>{data.message}</Text>
+                  <Text style={styles.senderName}> {data.displayName} </Text>
+                </View>
+              )
+            )}
+          </ScrollView>
+        </>
 
-            {/* ---------------- send Message -------------- */}
-            <View style={styles.footer}>
-              <TextInput
-                type="text"
-                placeholder="Type a message"
-                style={styles.textInput}
-                value={input}
-                onChangeText={(text) => setInput(text)}
-                onSubmitEditing={sendMessage}
-              />
-              <Button
-                onPress={sendMessage}
-                disabled={!input}
-                icon={<Ionicons name="send" size={35} color={"#2C6BED"} />}
-                type="clear"
-              />
-            </View>
-          </>
-        </TouchableWithoutFeedback>
+        {/* ---------------- send Message -------------- */}
+        <View style={styles.footer}>
+          <TextInput
+            type="text"
+            autoFocus
+            placeholder="Type a message"
+            style={styles.textInput}
+            value={input}
+            onChangeText={(text) => setInput(text)}
+            onSubmitEditing={sendMessage}
+          />
+          <Button
+            onPress={sendMessage}
+            disabled={!input}
+            icon={<Ionicons name="send" size={35} color={"#2C6BED"} />}
+            type="clear"
+          />
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
