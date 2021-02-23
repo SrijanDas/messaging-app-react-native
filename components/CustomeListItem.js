@@ -12,9 +12,11 @@ const CustomeListItem = ({ id, chatName, enterChat }) => {
       .doc(id)
       .collection("messages")
       .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) =>
-        setChatMessages(snapshot.docs.map((doc) => doc.data()))
-      );
+      .onSnapshot((snapshot) => {
+        setChatMessages(snapshot.docs.map((doc) => doc.data()));
+        console.log("snapshot", snapshot.docs);
+      });
+
     return unsubscribe;
   }, []);
 

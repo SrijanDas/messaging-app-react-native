@@ -9,8 +9,10 @@ import RegisterScreen from "./screens/RegisterScreen";
 import HomeScreen from "./screens/HomeScreen";
 import AddChatScreen from "./screens/AddChatScreen";
 import ChatScreen from "./screens/ChatScreen";
+import { LogBox } from "react-native";
 
 const Stack = createStackNavigator();
+LogBox.ignoreLogs(["Setting a timer"]);
 
 const globalStyleOptions = {
   headerStyle: { backgroundColor: "#2C6BED" },
