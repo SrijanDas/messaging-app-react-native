@@ -1,19 +1,22 @@
 import React, { useLayoutEffect, useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { Input, Button, Avatar, Text, Image } from "react-native-elements";
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
 import { StatusBar } from "expo-status-bar";
 import { KeyboardAvoidingView, TouchableWithoutFeedback } from "react-native";
 import { Keyboard } from "react-native";
 import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import firebase from "firebase";
+import { Alert } from "react-native";
 
 const AddChatScreen = ({ navigation }) => {
   const [input, setInput] = useState("");
   const [image, setImage] = useState(
-    "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
+    "https://image.flaticon.com/icons/png/512/2076/2076114.png"
   );
+  // const [progress, setProgress] = useState(0);
+  // const [url, setUrl] = useState("");
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -35,18 +38,21 @@ const AddChatScreen = ({ navigation }) => {
     })();
   }, []);
 
+  const handleUpload = async (fileName) => {
+    console.log("Uploading");
+  };
+
   const createChat = async () => {
+    const fileName = "defaultChatIcon.jpg";
     await db
       .collection("chats")
       .add({
         chatName: input,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        chatIcon: image,
+        chatIcon: fileName,
       })
       .then(() => {
         setInput("");
-      })
-      .then(() => {
         navigation.goBack();
       })
       .catch((error) => {
@@ -65,8 +71,6 @@ const AddChatScreen = ({ navigation }) => {
       aspect: [4, 3],
       quality: 0.5,
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);

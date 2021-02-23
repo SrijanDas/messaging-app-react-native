@@ -72,10 +72,11 @@ const HomeScreen = ({ navigation }) => {
     });
   }, []);
 
-  const enterChat = (id, chatName) => {
+  const enterChat = (id, chatName, chatIconUri) => {
     navigation.navigate("Chat", {
       id,
       chatName,
+      chatIconUri,
     });
   };
 
@@ -83,11 +84,12 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView>
       <StatusBar style="dark" />
       <ScrollView style={styles.container}>
-        {chats.map(({ id, data: { chatName } }) => (
+        {chats.map(({ id, data: { chatName, chatIcon } }) => (
           <CustomeListItem
             key={id}
             id={id}
             chatName={chatName}
+            chatIcon={chatIcon}
             enterChat={enterChat}
           />
         ))}

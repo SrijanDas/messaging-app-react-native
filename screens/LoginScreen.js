@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { StatusBar } from "expo-status-bar";
+import { setStatusBarBackgroundColor, StatusBar } from "expo-status-bar";
 import { Image, Input, Button } from "react-native-elements";
 import { KeyboardAvoidingView } from "react-native";
 import { auth } from "../firebase";
@@ -28,6 +28,7 @@ const LoginScreen = ({ navigation }) => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <StatusBar style="light" />
+
       <Image
         source={{
           uri:

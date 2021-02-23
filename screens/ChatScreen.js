@@ -32,13 +32,7 @@ const ChatScreen = ({ navigation, route }) => {
             alignItems: "center",
           }}
         >
-          <Avatar
-            rounded
-            source={{
-              uri:
-                "https://www.cmcaindia.org/wp-content/uploads/2015/11/default-profile-picture-gmail-2.png",
-            }}
-          />
+          <Avatar rounded source={{ uri: route.params.chatIconUri }} />
           <Text
             style={{
               color: "white",
